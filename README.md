@@ -33,6 +33,9 @@ Matakuliah: Pemograman Web 1
 </IfModule>
 ```
 
+`.htaccess` berfungsi untuk mengaktifkan modul `mod_rewrite` agar URL bisa diubah. Bagian `RewriteEngine On` menyalakan fitur pengaturan URL. `RewriteBase /lab11_php_oop/` memberi tahu server bahwa aturan ini berlaku di folder project. Dua baris kondisi setelahnya memastikan bahwa jika yang diminta adalah file atau folder asli, server tidak mengubahnya. Aturan terakhir mengarahkan semua URL yang bukan file asli menuju `index.php`, sehingga sistem routing bisa membaca bagian URL seperti `artikel/tambah` tanpa memakai `.php`.
+
+
 ## config.php
 
 ```php
@@ -44,6 +47,10 @@ $config = [
     'db_name' => 'latihan_oop'
 ];
 ```
+
+
+Kode tersebut berisi pengaturan agar aplikasi bisa terhubung ke database MySQL. Bagian `'host' => 'localhost'` menunjukkan bahwa database berada di komputer yang sama. `'username' => 'Marsya Nabila'` adalah nama pengguna MySQL yang kamu pakai untuk login. `'password' => '290306'` adalah kata sandi MySQL milik akun tersebut. `'db_name' => 'latihan_oop'` adalah nama database yang akan dipakai aplikasi. File ini nanti dibaca oleh class Database untuk membuat koneksi ke MySQL.
+
 
 ## index.php
 
@@ -73,6 +80,8 @@ if (file_exists($file)) {
 
 include "template/footer.php";
 ```
+
+File `index.php` berfungsi sebagai router utama dalam project. File ini mengambil URL yang diakses pengguna melalui PATH_INFO, lalu memecahnya menjadi dua bagian: nama modul dan nama halaman. Dari dua nilai tersebut, sistem menentukan file mana yang harus dimuat dari folder module/. Jika file sesuai rute ditemukan, maka kontennya ditampilkan. Jika tidak, sistem akan menampilkan pesan bahwa halaman tidak tersedia. File ini juga memuat template header, sidebar, dan footer sehingga setiap halaman memiliki tampilan yang konsisten di seluruh aplikasi.
 
 ## Class/ (database.php)
 
@@ -129,6 +138,10 @@ class Database {
 }
 ?>
 ```
+
+File Database.php berfungsi sebagai class untuk menangani koneksi dan operasi dasar ke database MySQL. Pada saat class di-inisialisasi, file ini mengambil konfigurasi database dari config.php, kemudian membuat koneksi menggunakan mysqli. Jika koneksi gagal, program akan berhenti dan menampilkan pesan error. Class ini juga mengatur charset menjadi UTF-8 agar data teks tersimpan dengan benar.
+
+Di dalamnya terdapat fungsi fetchAll() yang digunakan untuk menjalankan sebuah query dan mengambil semua data hasilnya dalam bentuk array. Selain itu, terdapat fungsi insert() yang mempermudah proses penyimpanan data ke dalam tabel. Fungsi ini secara otomatis membuat query INSERT berdasarkan nama kolom dan nilai yang diberikan. Dengan class ini, program dapat melakukan operasi database lebih sederhana dan terstruktur dalam konsep OOP.
 
 ## Class/ (form.php)
 
@@ -205,3 +218,7 @@ class Form {
     }
 }
 ```
+
+File `Form.php` ini berfungsi sebagai class pembuat form dinamis. Di dalam class terdapat mekanisme untuk menambahkan field input secara fleksibel seperti text, textarea, select, radio, checkbox, password, dan file upload. Setiap field yang ditambahkan melalui fungsi addField() disimpan ke dalam array, kemudian seluruh field tersebut ditampilkan melalui fungsi displayForm().
+
+Class ini menangani berbagai jenis input dengan pengecekan tipe pada saat form dirender. Jika field memiliki nilai sebelumnya (misalnya untuk form edit), nilainya otomatis diisi kembali. Dengan cara ini, program tidak perlu membuat form satu per satu secara manual, karena seluruh struktur formulir dibuat secara otomatis berdasarkan konfigurasi yang diberikan melalui class ini. Class ini menjadikan pembuatan form lebih rapi, reusable, dan sesuai konsep OOP.

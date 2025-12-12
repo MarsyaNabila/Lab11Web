@@ -17,7 +17,7 @@ Matakuliah: Pemograman Web 1
    
 3. Mahasiswa mampu membuat mini-framework sederhana menggunakan PHP OOP.
 
-## .htacces
+## .htaccess
 
 ```
 <IfModule mod_rewrite.c>
